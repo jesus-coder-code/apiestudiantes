@@ -4,6 +4,7 @@ import com.example.apiestudiantes.entity.Student;
 import com.example.apiestudiantes.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -17,45 +18,65 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @GetMapping("/getStudents")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Student> getAll(){
-        return studentService.getStudents();
+    @GetMapping
+    public ResponseEntity<?> getAll() {
+        List<Student> result;
+        String message = "no students found";
+        Map<String, String> response = new HashMap<>();
+        try {
+            result = studentService.getStudents();
+            if(result.isEmpty()){
+                response.put("message", message);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal error");
+        }
     }
 
-    @PostMapping("/newStudent")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Student save(@RequestBody Student student){
-        return studentService.saveOrUpdate(student);
+    @PostMapping
+    public ResponseEntity<?> save(@RequestBody Student student) {
+        //Student result = studentService.saveOrUpdate(student);
+        String message = "student was created";
+        Map<String, String> response = new HashMap<>();
+        response.put("message", message);
+        try {
+            studentService.saveOrUpdate(student);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("an error was ocurred");
+        }
     }
 
-    @PutMapping("/updateStudent")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Map<String, String> update(@RequestBody Student student){
-        studentService.saveOrUpdate(student);
+    @PutMapping
+    public ResponseEntity<?> update(@RequestBody Student student) {
         String message = "student was updated";
         Map<String, String> response = new HashMap<>();
         response.put("message", message);
-        return response;
+        try {
+            studentService.saveOrUpdate(student);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal error");
+        }
     }
 
     @DeleteMapping("/deleteStudent/{id}")
-    public Map<String, String> delete(@PathVariable("id") Long id){
-        boolean ok = studentService.delete(id);
-        String message;
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        String message = "student was deleted";
         Map<String, String> response = new HashMap<>();
-        if (ok){
-            message = "student was deleted";
-            
-        }else {
-            message = "an error was occurred";
+        response.put("message",message);
+        try {
+            studentService.delete(id);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal error");
         }
-        response.put("message", message);
-        return response;
     }
 
     @GetMapping("getStudent/{id}")
-    public Optional<Student> getById(@PathVariable("id") Long id){
+    public Optional<Student> getById(@PathVariable("id") Long id) {
         return studentService.getStudentById(id);
     }
 }

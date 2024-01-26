@@ -22,19 +22,9 @@ public class StudentService {
     }
 
     public Student saveOrUpdate(Student student){
-        try {
-            studentRepository.save(student);
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return student;
+        return studentRepository.save(student);
     }
-    public boolean delete(Long id){
-        try {
-            studentRepository.deleteById(id);
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return true;
+    public void delete(Long id){
+       studentRepository.deleteById(id);
     }
 }
