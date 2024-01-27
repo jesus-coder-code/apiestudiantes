@@ -1,7 +1,10 @@
 package com.example.apiestudiantes.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
+
+
 
 @Data
 @Entity
@@ -9,15 +12,23 @@ import lombok.Data;
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true)
+    @Column
     private Long id;
 
-    @Column(name = "firstname")
+    @Column
+    @NotBlank
+    @NotNull(message = "debe llenarse")
+    @Pattern(regexp = "^[a-zA-Z ]+$", message = "solo se permiten letras")
     private String firstname;
 
-    @Column(name = "lastname")
+    @Column
+    @NotBlank
+    @NotNull(message = "apellido debe llenarse")
+    @Pattern(regexp = "^[a-zA-Z ]+$", message = "solo se permiten letras")
     private String lastname;
 
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(unique = true)
+    @NotBlank(message = "ingrese un email")
+    @Email(message = "email no valido")
     private String email;
 }

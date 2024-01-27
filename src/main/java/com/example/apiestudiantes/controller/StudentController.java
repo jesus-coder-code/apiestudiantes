@@ -2,6 +2,7 @@ package com.example.apiestudiantes.controller;
 
 import com.example.apiestudiantes.entity.Student;
 import com.example.apiestudiantes.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Student student) {
+    public ResponseEntity<?> save(@Valid @RequestBody Student student) {
         //Student result = studentService.saveOrUpdate(student);
         String message = "student was created";
         Map<String, String> response = new HashMap<>();
@@ -45,12 +46,13 @@ public class StudentController {
             studentService.saveOrUpdate(student);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }catch (Exception e){
+            System.out.println(e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("an error was ocurred");
         }
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody Student student) {
+    public ResponseEntity<?> update(@Valid @RequestBody Student student) {
         String message = "student was updated";
         Map<String, String> response = new HashMap<>();
         response.put("message", message);
