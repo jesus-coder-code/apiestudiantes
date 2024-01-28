@@ -1,5 +1,7 @@
 package com.example.apiestudiantes.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -23,7 +25,9 @@ public class Task {
     @NotNull(message = "debe marcar si la tarea fue completada o no")
     private boolean complete;
 
-    @ManyToOne
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
     @NotNull(message = "ingrese el id del estudiante")
     private Student student;

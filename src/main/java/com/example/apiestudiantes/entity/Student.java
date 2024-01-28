@@ -1,10 +1,12 @@
 package com.example.apiestudiantes.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -34,6 +36,7 @@ public class Student {
     @Email(message = "email no valido")
     private String email;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private List<Task>tasks = new ArrayList<>();
+    @JsonManagedReference
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Task>tasks;
 }
