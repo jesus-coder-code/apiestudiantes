@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -17,7 +19,7 @@ public class Student {
 
     @Column
     @NotBlank
-    @NotNull(message = "debe llenarse")
+    @NotNull(message = "nombre debe llenarse")
     @Pattern(regexp = "^[a-zA-Z ]+$", message = "solo se permiten letras")
     private String firstname;
 
@@ -31,4 +33,7 @@ public class Student {
     @NotBlank(message = "ingrese un email")
     @Email(message = "email no valido")
     private String email;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<Task>tasks = new ArrayList<>();
 }

@@ -32,6 +32,7 @@ public class StudentController {
             }
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
+            System.out.println(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("internal error");
         }
     }
