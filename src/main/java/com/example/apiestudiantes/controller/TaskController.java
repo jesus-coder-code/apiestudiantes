@@ -50,4 +50,18 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("an error was ocurred");
         }
     }
+
+    @PutMapping
+    public ResponseEntity<?> updateTask(@Valid @RequestBody Task task){
+        String message = "task was uptaded";
+        Map<String, String> response = new HashMap<>();
+        response.put("message", message);
+        try{
+            taskService.saveOrUpdateTask(task);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        }catch (Exception e){
+            System.out.println(e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("an error was ocurred");
+        }
+    }
 }

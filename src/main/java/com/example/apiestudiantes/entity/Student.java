@@ -21,13 +21,13 @@ public class Student {
 
     @Column
     @NotBlank
-    @NotNull(message = "nombre debe llenarse")
+    @NotNull(message = "indique un nombre para el estudiante")
     @Pattern(regexp = "^[a-zA-Z ]+$", message = "solo se permiten letras")
     private String firstname;
 
     @Column
     @NotBlank
-    @NotNull(message = "apellido debe llenarse")
+    @NotNull(message = "el estudiante debe tener un apellido")
     @Pattern(regexp = "^[a-zA-Z ]+$", message = "solo se permiten letras")
     private String lastname;
 

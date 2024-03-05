@@ -17,10 +17,10 @@ public class ExceptionHandler {
     public Map<String, String> handleValidateExceptions(MethodArgumentNotValidException ex){
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
+           //String fieldName = ((FieldError) error).getField();
             String message = error.getDefaultMessage();
 
-            errors.put(fieldName, message);
+            errors.put("message", message);
         });
 
         return errors;
